@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://vivero-sage.vercel.app"),
   title: "Vivero Frijolito | Plantas de colección",
   description:
     "Vivero Frijolito: plantas de colección, monsteras, philodendros, especies exóticas e insumos para amantes de las plantas.",
@@ -50,7 +51,6 @@ export const metadata: Metadata = {
     images: ["/og-vivero.jpg"],
   },
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{
