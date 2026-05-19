@@ -92,23 +92,22 @@ export default function AdminPage() {
 
   useEffect(() => {
     async function checkSession() {
-      const { data } = await supabase.auth.getSession();
-      setSession(data.session);
-      setLoadingSession(false);
+        const {
+        data: { session },
+        } = await supabase.auth.getSession();
+
+        if (!session) {
+        router.replace("/admin/login");
+        router.refresh();
+        return;
+        }
+
+        setSession(session);
+        setLoadingSession(false);
     }
 
     checkSession();
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event, newSession) => {
-        setSession(newSession);
-      }
-    );
-
-    return () => {
-      listener.subscription.unsubscribe();
-    };
-  }, []);
+    }, [router]);
 
   useEffect(() => {
     if (session) {
@@ -461,17 +460,23 @@ export default function AdminPage() {
 
   if (loadingSession) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#f8f3ed] px-6 text-[#1f2a24]">
+        <main className="flex min-h-screen items-center justify-center bg-[#f8f3ed] px-6 text-[#1f2a24]">
         <div className="rounded-4xl bg-white px-8 py-6 shadow-xl">
-          Verificando acceso...
+            Verificando acceso...
         </div>
-      </main>
+        </main>
     );
-  }
+    }
 
-        if (!session) {
-        return null;
-        }
+    if (!session) {
+    return (
+        <main className="flex min-h-screen items-center justify-center bg-[#f8f3ed] px-6 text-[#1f2a24]">
+        <div className="rounded-4xl bg-white px-8 py-6 shadow-xl">
+            Redirigiendo al login...
+        </div>
+        </main>
+    );
+    }
 
   return (
     <main className="min-h-screen bg-[#f8f3ed] px-6 py-10 text-[#1f2a24]">
