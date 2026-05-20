@@ -78,10 +78,10 @@ export default function Categories({
               key={category.name}
               type="button"
               onClick={() => handleCategoryClick(category.name)}
-              className="group min-w-[82px] rounded-[28px] p-1 transition hover:-translate-y-1 sm:min-w-[92px]"
+              className="group min-w-20.5 rounded-[28px] p-1 transition hover:-translate-y-1 sm:min-w-23"
             >
               <div
-                className={`h-[82px] w-[82px] shrink-0 overflow-hidden rounded-[24px] border-4 shadow-lg transition duration-300 sm:h-[92px] sm:w-[92px] sm:rounded-[28px] ${
+                className={`h-20.5 w-20.5 shrink-0 overflow-hidden rounded-3xl border-4 shadow-lg transition duration-300 sm:h-23 sm:w-23 sm:rounded-[28px] ${
                   isActive
                   ? "scale-105 border-[#2f6f4e] shadow-xl shadow-[#2f6f4e]/20"
                   : "border-white hover:border-[#d8cfc2]"

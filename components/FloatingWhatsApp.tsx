@@ -10,19 +10,17 @@ export default function FloatingWhatsApp() {
 
   return (
     <a
-      href={`https://wa.me/${phone}?text=${message}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="Contactar por WhatsApp"
-      className="fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-[#2f7d55] shadow-2xl shadow-black/20 transition duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-[#256844]"
-    >
-      <Image
-        src="/whatsapp.png"
-        alt="WhatsApp"
-        width={36}
-        height={36}
-        className="h-9 w-9 object-contain"
-      />
-    </a>
+  href={`https://wa.me/${phone}?text=${message}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="Contactar por WhatsApp"
+  className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-[#2f7d55] shadow-2xl shadow-black/20 transition duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-[#256844] sm:h-16 sm:w-16"
+>
+  <img
+    src="/whatsapp.png"
+    alt="WhatsApp"
+    className="h-8 w-8 object-contain sm:h-9 sm:w-9"
+  />
+</a>
   );
 }

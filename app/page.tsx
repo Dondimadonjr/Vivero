@@ -21,7 +21,7 @@ export default function Home() {
         setActiveCategory={setActiveCategory}
       />
 
-      <ProductsGrid activeCategory={activeCategory} />
+      <ProductsGrid key={activeCategory} activeCategory={activeCategory} />
 
       <Footer />
       <FloatingWhatsApp />
