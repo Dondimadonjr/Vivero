@@ -45,7 +45,7 @@ export default function Categories({
     const catalogo = document.getElementById("catalogo");
 
     if (catalogo) {
-      const y = catalogo.getBoundingClientRect().top + window.scrollY - 120;
+      const y = catalogo.getBoundingClientRect().top + window.scrollY - 70;
 
       window.scrollTo({
         top: y,

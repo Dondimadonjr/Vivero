@@ -77,7 +77,7 @@ export default function Header() {
 
               if (!catalogo) return;
 
-              const y = catalogo.getBoundingClientRect().top + window.scrollY - 70;
+              const y = catalogo.getBoundingClientRect().top + window.scrollY - 50;
 
               window.scrollTo({
                 top: y,

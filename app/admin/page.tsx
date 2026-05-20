@@ -15,6 +15,9 @@ type Product = {
   category: string | null;
   image_url: string | null;
   images: string[] | null;
+  light: string | null;
+  watering: string | null;
+  difficulty: string | null;
   available: boolean;
   featured: boolean;
   created_at?: string;
@@ -27,6 +30,9 @@ type ProductForm = {
   category: string;
   image_url: string;
   images: string[];
+  light: string;
+  watering: string;
+  difficulty: string;
   available: boolean;
   featured: boolean;
 };
@@ -44,16 +50,19 @@ const MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1024 * 1024;
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 const categories = ["Interior", "Exterior", "Insumos", "Exóticas"];
 
-const emptyForm: ProductForm = {
-  name: "",
-  description: "",
-  price: "",
-  category: "Interior",
-  image_url: "",
-  images: [],
-  available: true,
-  featured: false,
-};
+    const emptyForm: ProductForm = {
+      name: "",
+      description: "",
+      price: "",
+      category: "Interior",
+      image_url: "",
+      images: [] as string[],
+      light: "Luz indirecta",
+      watering: "Moderado",
+      difficulty: "Fácil",
+      available: true,
+      featured: false,
+    };
 
 function ProductSkeleton() {
   return (
@@ -242,6 +251,25 @@ export default function AdminPage() {
     router.refresh();
   }
 
+  const ALLOWED_IMAGE_HOSTS = [
+  "images.unsplash.com",
+]
+
+function isValidImageUrl(value: string) {
+  try {
+    const url = new URL(value);
+
+    if (url.protocol !== "https:") return false;
+
+    const isSupabaseImage = url.hostname.endsWith(".supabase.co");
+    const isAllowedHost = ALLOWED_IMAGE_HOSTS.includes(url.hostname);
+
+    return isSupabaseImage || isAllowedHost;
+  } catch {
+    return false;
+  }
+}
+
   async function getProducts() {
     setLoadingProducts(true);
 
@@ -366,6 +394,9 @@ export default function AdminPage() {
       category: form.category,
       image_url: mainImage,
       images: cleanImages,
+      light: form.light,
+      watering: form.watering,
+      difficulty: form.difficulty,
       available: form.available,
       featured: form.featured,
     };
@@ -503,6 +534,9 @@ export default function AdminPage() {
       category: product.category || "Interior",
       image_url: product.image_url || images[0] || "",
       images,
+      light: product.light || "Luz indirecta",
+      watering: product.watering || "Moderado",
+      difficulty: product.difficulty || "Fácil",
       available: product.available,
       featured: product.featured,
     });
@@ -846,6 +880,41 @@ export default function AdminPage() {
                   />
                 </div>
 
+                <div className="grid gap-4 md:grid-cols-3">
+                  <CustomSelect
+                    label="Luz recomendada"
+                    value={form.light}
+                    options={[
+                      "Luz indirecta",
+                      "Luz brillante indirecta",
+                      "Sombra parcial",
+                      "Sol directo",
+                      "Exterior luminoso",
+                    ]}
+                    onChange={(value) => setForm({ ...form, light: value })}
+                  />
+
+                  <CustomSelect
+                    label="Riego"
+                    value={form.watering}
+                    options={[
+                      "Bajo",
+                      "Moderado",
+                      "Frecuente",
+                      "Mantener húmedo",
+                      "Dejar secar entre riegos",
+                    ]}
+                    onChange={(value) => setForm({ ...form, watering: value })}
+                  />
+
+                  <CustomSelect
+                    label="Dificultad"
+                    value={form.difficulty}
+                    options={["Fácil", "Media", "Avanzada"]}
+                    onChange={(value) => setForm({ ...form, difficulty: value })}
+                  />
+                </div>
+
                 <div className="rounded-3xl border border-dashed border-[#b7c9bb] bg-[#f7fbf7] p-5">
                   <label className="block text-sm font-semibold text-[#1f2a24]">
                     Imágenes del producto
@@ -1054,6 +1123,8 @@ export default function AdminPage() {
                   disabled={saving || uploading}
                   className="rounded-full bg-[#2f6f4e] px-7 py-3 font-medium text-white shadow-lg shadow-[#2f6f4e]/20 transition hover:bg-[#255a3f] disabled:cursor-not-allowed disabled:opacity-60"
                 >
+
+                  
                   {saving
                     ? "Guardando..."
                     : uploading

@@ -11,49 +11,50 @@ export default function Footer() {
   )}`;
 
   return (
-    <footer className="border-t border-[#e7ddcf] bg-[#f4eee4] px-6 py-10">
+    <footer className="border-t border-[#e7ddcf] bg-[#f4eee4] px-5 py-8 sm:px-6 sm:py-10">
       <div className="mx-auto max-w-7xl">
         <div className="grid items-stretch gap-6 lg:grid-cols-[1.1fr_0.9fr_1fr]">
-          <div className="h-full rounded-[32px] border border-[#d8cfc2] bg-[#fffaf1]/70 p-8">
+          <div className="h-full rounded-[28px] border border-[#d8cfc2] bg-[#fffaf1]/70 p-6 sm:rounded-[32px] sm:p-8">
             <div className="flex items-center gap-4">
               <Image
                 src="/logo_vivero_circular.png"
                 alt="Logo Vivero Frijolito"
                 width={72}
                 height={72}
-                className="h-16 w-16 rounded-full object-contain"
+                className="h-14 w-14 rounded-full object-contain sm:h-16 sm:w-16"
               />
 
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#2f6f4e]">
+                <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#2f6f4e] sm:text-sm">
                   Vivero
                 </p>
-                <h2 className="text-4xl font-semibold tracking-tight text-[#1f2a24]">
+
+                <h2 className="text-3xl font-semibold tracking-tight text-[#1f2a24] sm:text-4xl">
                   frijolito
                 </h2>
               </div>
             </div>
 
-            <p className="mt-7 max-w-md text-lg leading-8 text-[#5b655f]">
-              Plantas con carácter, hojas nuevas y mucho cariño para llenar tu
-              hogar de vida.
+            <p className="mt-6 text-base leading-7 text-[#5b655f] sm:mt-7 sm:max-w-md sm:text-lg sm:leading-8">
+              Plantas con carácter, hojas nuevas y mucho cariño para llenar tu hogar de
+              vida.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-2">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:flex sm:flex-wrap sm:gap-2">
               {["Interior", "Exterior", "Exóticas", "Insumos"].map((item) => (
                 <span
                   key={item}
-                  className="rounded-full border border-[#d8cfc2] bg-white/80 px-4 py-2 text-sm font-medium text-[#2f6f4e]"
+                  className="rounded-full border border-[#d8cfc2] bg-white/80 px-4 py-2 text-center text-sm font-medium text-[#2f6f4e]"
                 >
                   {item}
                 </span>
               ))}
             </div>
 
-            <div className="mt-8 border-t border-[#e4d8c8] pt-6">
+            <div className="mt-6 border-t border-[#e4d8c8] pt-5 sm:mt-8 sm:pt-6">
               <p className="text-sm leading-6 text-[#5b655f]">
-                Elegidas con cuidado para llegar sanas, bonitas y listas para
-                acompañar tu espacio.
+                Elegidas con cuidado para llegar sanas, bonitas y listas para acompañar tu
+                espacio.
               </p>
             </div>
           </div>
@@ -132,7 +133,7 @@ export default function Footer() {
                 </Link>
 
                 <Link
-                  href="https://facebook.com/TU_PAGINA"
+                  href="https://www.facebook.com/viverofrijolito"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center gap-2 rounded-2xl border border-[#d8cfc2] bg-white px-4 py-3 text-sm font-medium text-[#1f2a24] transition hover:bg-[#edf5ef]"

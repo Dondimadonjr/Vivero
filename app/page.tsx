@@ -5,8 +5,8 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Categories from "@/components/Categories";
 import ProductsGrid from "@/components/ProductsGrid";
-import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import Footer from "@/components/Footer";
+import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState("Todos");
@@ -21,7 +21,7 @@ export default function Home() {
         setActiveCategory={setActiveCategory}
       />
 
-      <ProductsGrid key={activeCategory} activeCategory={activeCategory} />
+      <ProductsGrid activeCategory={activeCategory} />
 
       <Footer />
       <FloatingWhatsApp />

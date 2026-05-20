@@ -15,7 +15,7 @@ export default function Hero() {
 
     if (!catalogo) return;
 
-    const y = catalogo.getBoundingClientRect().top + window.scrollY - 120;
+    const y = catalogo.getBoundingClientRect().top + window.scrollY - 50;
 
     window.scrollTo({
       top: y,
