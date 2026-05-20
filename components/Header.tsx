@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
 
-  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "56912345678";
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "56966913920";
 
   const whatsappMessage = encodeURIComponent(
     "Hola, quiero consultar por las plantas disponibles del vivero."
