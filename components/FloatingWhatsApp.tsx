@@ -1,21 +1,28 @@
-import { MessageCircle } from "lucide-react";
+"use client";
+import Image from "next/image";
 
 export default function FloatingWhatsApp() {
-  const whatsappNumber =
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "56912345678";
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "56966913920";
 
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    "Hola, quiero consultar por las plantas disponibles en Vivero Frijolito."
-  )}`;
+  const message = encodeURIComponent(
+    "Hola, quiero consultar por las plantas disponibles del vivero."
+  );
 
   return (
     <a
-      href={whatsappUrl}
+      href={`https://wa.me/${phone}?text=${message}`}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar por WhatsApp"
-      className="fixed bottom-8 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#2f6f4e] text-white shadow-2xl shadow-[#2f6f4e]/30 transition hover:-translate-y-1 hover:bg-[#255c40] sm:bottom-10 sm:right-8 sm:h-16 sm:w-16"    >
-      <MessageCircle size={26} />
+      className="fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-[#2f7d55] shadow-2xl shadow-black/20 transition duration-300 hover:-translate-y-1 hover:scale-105 hover:bg-[#256844]"
+    >
+      <Image
+        src="/whatsapp.png"
+        alt="WhatsApp"
+        width={36}
+        height={36}
+        className="h-9 w-9 object-contain"
+      />
     </a>
   );
 }

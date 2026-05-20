@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import type { Session } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+
 
 type Product = {
   id: string;
@@ -23,19 +23,13 @@ const emptyForm = {
   name: "",
   description: "",
   price: "",
-  category: "Monsteras",
+  category: "Interior",
   image_url: "",
   available: true,
   featured: false,
 };
 
-const categories = [
-  "Monsteras",
-  "Philodendros",
-  "Exóticas",
-  "Insumos",
-  "Filito",
-];
+const categories = ["Interior", "Exterior", "Insumos", "Exóticas"];
 
 function ProductSkeleton() {
   return (
@@ -65,6 +59,55 @@ function ProductSkeleton() {
     </article>
   );
 }
+type CustomSelectProps = {
+  label: string;
+  value: string;
+  options: string[];
+  onChange: (value: string) => void;
+};
+
+function CustomSelect({ label, value, options, onChange }: CustomSelectProps) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="relative">
+      <label className="mb-2 block text-sm font-semibold text-[#1f2a24]">
+        {label}
+      </label>
+
+      <button
+        type="button"
+        onClick={() => setOpen((current) => !current)}
+        className="flex w-full items-center justify-between rounded-2xl border border-[#d8cfc2] bg-[#fffdf9] px-4 py-3 text-left outline-none transition focus:border-[#2f6f4e] focus:ring-4 focus:ring-[#2f6f4e]/10"
+      >
+        <span>{value || "Seleccionar"}</span>
+        <span className={`transition ${open ? "rotate-180" : ""}`}>⌄</span>
+      </button>
+
+      {open && (
+        <div className="absolute left-0 right-0 top-full z-50 mt-2 overflow-hidden rounded-2xl border border-[#d8cfc2] bg-white shadow-xl">
+          {options.map((option) => (
+            <button
+              key={option}
+              type="button"
+              onClick={() => {
+                onChange(option);
+                setOpen(false);
+              }}
+              className={`block w-full px-4 py-3 text-left text-sm transition ${
+                value === option
+                  ? "bg-[#edf5ef] font-semibold text-[#2f6f4e]"
+                  : "text-[#1f2a24] hover:bg-[#f8f3ed]"
+              }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function AdminPage() {
   const [session, setSession] = useState<Session | null>(null);
@@ -75,20 +118,16 @@ export default function AdminPage() {
   const [categoryFilter, setCategoryFilter] = useState("todas");
   const [products, setProducts] = useState<Product[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
-  
-  
 
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [oldImageUrl, setOldImageUrl] = useState<string | null>(null);
-  
 
   const [message, setMessage] = useState("");
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const router = useRouter();
-  
 
   useEffect(() => {
     async function checkSession() {
@@ -149,13 +188,15 @@ export default function AdminPage() {
     const maxSize = 3 * 1024 * 1024; // 3MB
 
     if (!allowedTypes.includes(file.type)) {
-    alert("Formato no permitido. Usa JPG, PNG o WEBP.");
-    return;
+      setUploading(false);
+      alert("Formato no permitido. Usa JPG, PNG o WEBP.");
+      return;
     }
 
     if (file.size > maxSize) {
-    alert("La imagen es demasiado pesada. Máximo permitido: 3MB.");
-    return;
+      setUploading(false);
+      alert("La imagen es demasiado pesada. Máximo permitido: 3MB.");
+      return;
     }
 
     const cleanName = file.name
@@ -341,7 +382,7 @@ export default function AdminPage() {
         name: product.name || "",
         description: product.description || "",
         price: product.price ? String(product.price) : "",
-        category: product.category || "Monsteras",
+        category: product.category || "Interior",
         image_url: product.image_url || "",
         available: product.available,
         featured: product.featured,
@@ -511,10 +552,10 @@ export default function AdminPage() {
                 <button
                     type="button"
                     onClick={toggleForm}
-                    className={`rounded-2xl px-5 py-3 border border-[#2f6f4e] bg-white text-black font-medium shadow-lg transition shadow-[#c0392b]/20 hover:bg-[#255a3f] ${
+                    className={`rounded-2xl px-5 py-3 font-medium shadow-lg transition ${
                     showForm
-                        ? "bg-[#1f2a24] text-black shadow-[#1f2a24]/20 hover:bg-[#111815]"
-                        : "bg-[#2f6f4e] text-black shadow-[#2f6f4e]/20 hover:bg-[#255a3f]"
+                        ? "bg-[#1f2a24] text-white shadow-[#1f2a24]/20 hover:bg-[#111815]"
+                        : "bg-[#2f6f4e] text-white shadow-[#2f6f4e]/20 hover:bg-[#255a3f]"
                     }`}
                 >
                     {showForm ? "Cerrar formulario" : "+ Nuevo producto"}
@@ -573,7 +614,7 @@ export default function AdminPage() {
         <div className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-center">
             <input
             type="text"
-            placeholder="Buscar por nombre, categoría o descripción..."
+            placeholder="Buscar por nombre, espacio o descripción..."
             className="w-full rounded-2xl border border-[#d8cfc2] bg-[#fffdf9] px-4 py-3 outline-none transition focus:border-[#2f6f4e] focus:ring-4 focus:ring-[#2f6f4e]/10"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -625,7 +666,7 @@ export default function AdminPage() {
 
         <div className="mt-4 border-t border-[#eadfce] pt-4">
             <p className="mb-3 text-sm font-semibold text-[#1f2a24]">
-            Filtrar por categoría
+            Filtrar por espacio
             </p>
 
             <div className="flex flex-wrap gap-2">
@@ -673,7 +714,7 @@ export default function AdminPage() {
                 </span>
                 {" · "}
                 <span className="font-semibold text-[#1f2a24]">
-                {categoryFilter === "todas" ? "Todas las categorías" : categoryFilter}
+                {categoryFilter === "todas" ? "Todos los espacios" : categoryFilter}
                 </span>
             </p>
 
@@ -757,21 +798,15 @@ export default function AdminPage() {
                     </div>
 
                     <div>
-                    <label className="mb-2 block text-sm font-semibold text-[#1f2a24]">
-                        Categoría *
-                    </label>
-                    <select
-                    className="w-full rounded-2xl border border-[#d8cfc2] bg-[#fffdf9] px-4 py-3 outline-none transition focus:border-[#2f6f4e] focus:ring-4 focus:ring-[#2f6f4e]/10"
-                    value={form.category}
-                    onChange={(e) => setForm({ ...form, category: e.target.value })}
-                    >
-                    {categories.map((category) => (
-                        <option key={category} value={category}>
-                        {category}
-                        </option>
-                    ))}
-                    </select>
-                    </div>
+                        <div className="relative">
+                            <CustomSelect
+                            label="Tipo de espacio *"
+                            value={form.category}
+                            options={categories}
+                            onChange={(value) => setForm({ ...form, category: value })}
+                            />
+                        </div>
+                     </div>
                 </div>
 
                 <div>
@@ -800,7 +835,6 @@ export default function AdminPage() {
                     </label>
 
                     <input
-                   
                     type="file"
                     accept="image/jpeg,image/png,image/webp"
                     className="block w-full cursor-pointer rounded-2xl border border-dashed border-[#cdbfae] bg-white px-4 py-4 text-sm text-[#5b655f] file:mr-4 file:rounded-full file:border-0 file:bg-[#2f6f4e] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:bg-[#fffdf9]"
@@ -832,11 +866,9 @@ export default function AdminPage() {
                     <div className="mt-5 overflow-hidden rounded-3xl bg-white shadow-sm">
                     {form.image_url ? (
                         <div className="relative">
-                            <Image
+                            <img
                             src={form.image_url}
                             alt="Vista previa"
-                            width={800}
-                            height={600}
                             className="h-64 w-full object-cover"
                             />
 
@@ -1011,107 +1043,109 @@ export default function AdminPage() {
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.map((product) => (
                 <article
-                key={product.id}
-                className="group overflow-hidden rounded-[30px] border border-[#eadfce] bg-white shadow-lg transition hover:-translate-y-1 hover:shadow-2xl"
-                >
-                <div className="relative">
-                    {product.image_url ? (
-                    <Image
-                        src={product.image_url}
-                        alt={product.name}
-                        width={600}
-                        height={400}
-                        className="h-48 w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                    ) : (
-                    <div className="flex h-48 items-center justify-center bg-[#f1eadf] text-[#5b655f]">
-                    Sin imagen
-                    </div>
-                    )}
-
-                    <div className="absolute left-4 top-4 flex flex-wrap gap-2">
-                    <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-[#2f6f4e] shadow-sm backdrop-blur">
-                        {product.category}
-                    </span>
-
-                    <span
-                    className={`rounded-full px-3 py-1 text-xs font-semibold shadow-sm backdrop-blur ${
-                        product.available
-                        ? "bg-[#edf5ef]/95 text-[#2f6f4e]"
-                        : "bg-red-50/95 text-red-600"
-                    }`}
+                    key={product.id}
+                    className="group overflow-hidden rounded-[32px] border border-[#e7ddcf] bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-xl"
                     >
-                    {product.available ? "Disponible" : "Agotado"}
-                    </span>
+                    <div className="relative h-64 overflow-hidden bg-[#efe7da]">
+                        {product.image_url ? (
+                        <img
+                            src={product.image_url}
+                            alt={product.name}
+                            className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                        />
+                        ) : (
+                        <div className="flex h-full w-full items-center justify-center text-[#8b927f]">
+                            Sin imagen
+                        </div>
+                        )}
 
-                    {product.featured && (
-                    <span className="rounded-full bg-[#fff7df]/95 px-3 py-1 text-xs font-semibold text-[#8a6500] shadow-sm backdrop-blur">
-                        Destacado
-                    </span>
-                    )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent" />
+
+                        <div className="absolute left-4 top-4 flex flex-wrap gap-2">
+                        <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-[#2f6f4e] shadow-sm backdrop-blur">
+                            {product.category || "Interior"}
+                        </span>
+
+                        {product.featured && (
+                            <span className="rounded-full bg-[#fff1bf]/95 px-3 py-1 text-xs font-semibold text-[#7a5b00] shadow-sm backdrop-blur">
+                            Destacado
+                            </span>
+                        )}
+                        </div>
+
+                        <div className="absolute right-4 top-4">
+                        <span
+                            className={`rounded-full px-3 py-1 text-xs font-semibold shadow-sm backdrop-blur ${
+                            product.available
+                                ? "bg-[#dff3d7]/95 text-[#315f2e]"
+                                : "bg-[#f3d7d7]/95 text-[#7a2f2f]"
+                            }`}
+                        >
+                            {product.available ? "Disponible" : "Agotado"}
+                        </span>
+                        </div>
                     </div>
-                </div>
 
-                <div className="p-6">
-                    <div className="flex items-start justify-between gap-4">
-                    <div>
-                        <h3 className="text-xl font-bold leading-tight text-[#1f2a24]">
+                    <div className="p-6">
+                        <h3 className="text-2xl font-bold tracking-tight text-[#1f2a24]">
                         {product.name}
                         </h3>
 
-                        <p className="mt-2 text-lg font-bold text-[#2f6f4e]">
-                        ${Number(product.price || 0).toLocaleString("es-CL")}
+                        <p className="mt-3 text-xl font-bold text-[#2f6f4e]">
+                        {product.price
+                            ? `$${Number(product.price).toLocaleString("es-CL")}`
+                            : "Sin precio"}
                         </p>
-                    </div>
-                    </div>
 
-                    <p className="mt-4 line-clamp-3 min-h-18 text-sm leading-6 text-[#5b655f]">
-                    {product.description || "Sin descripción disponible."}
-                    </p>
+                        <p className="mt-4 line-clamp-3 min-h-[72px] text-sm leading-6 text-[#5b655f]">
+                        {product.description || "Sin descripción."}
+                        </p>
 
-                    <div className="mt-5 border-t border-[#eadfce] pt-4">
-                        <div className="grid grid-cols-2 gap-2">
-                            <button
+                        <div className="my-6 h-px bg-[#eadfce]" />
+
+                        <div className="grid grid-cols-2 gap-3">
+                        <button
+                            type="button"
                             onClick={() => toggleAvailability(product)}
-                            className={`rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
-                                product.available
-                                ? "bg-[#fff3f0] text-red-600 hover:bg-red-100"
-                                : "bg-[#edf5ef] text-[#2f6f4e] hover:bg-[#dcece0]"
+                            className={`rounded-2xl px-4 py-3 text-sm font-semibold transition hover:-translate-y-0.5 ${
+                            product.available
+                                ? "bg-[#fff1f1] text-[#c1121f] hover:bg-[#ffe3e3]"
+                                : "bg-[#eef6df] text-[#2f6f4e] hover:bg-[#dff3d7]"
                             }`}
-                            >
+                        >
                             {product.available ? "Agotar" : "Activar"}
-                            </button>
+                        </button>
 
-                            <button
+                        <button
+                            type="button"
                             onClick={() => toggleFeatured(product)}
-                            className={`rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
-                                product.featured
-                                ? "bg-[#fff7df] text-[#8a6500] hover:bg-[#ffefbd]"
-                                : "bg-[#f8f3ed] text-[#5b655f] hover:bg-[#fff7df] hover:text-[#8a6500]"
+                            className={`rounded-2xl px-4 py-3 text-sm font-semibold transition hover:-translate-y-0.5 ${
+                            product.featured
+                                ? "bg-[#fff6d8] text-[#8a6500] hover:bg-[#ffedb0]"
+                                : "bg-[#f3eee6] text-[#5b655f] hover:bg-[#ebe2d5]"
                             }`}
-                            >
+                        >
                             {product.featured ? "Quitar" : "Destacar"}
-                            </button>
-                        </div>
+                        </button>
 
-                        <div className="mt-2 grid grid-cols-2 gap-2">
-                            <button
+                        <button
+                            type="button"
                             onClick={() => editProduct(product)}
-                            className="rounded-xl border border-[#d8cfc2] bg-white px-3 py-2.5 text-sm font-semibold text-[#1f2a24] transition hover:bg-[#edf5ef]"
-                            >
+                            className="rounded-2xl border border-[#d8cfc2] bg-white px-4 py-3 text-sm font-semibold text-[#1f2a24] transition hover:-translate-y-0.5 hover:bg-[#fffaf1]"
+                        >
                             Editar
-                            </button>
+                        </button>
 
-                            <button
+                        <button
+                            type="button"
                             onClick={() => deleteProduct(product)}
-                            className="rounded-xl bg-red-500 px-3 py-2.5 text-sm font-semibold text-white transition hover:bg-red-600"
-                            >
+                            className="rounded-2xl bg-[#ff2f3d] px-4 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#dc1f2b]"
+                        >
                             Eliminar
-                            </button>
+                        </button>
                         </div>
                     </div>
-                </div>
-                </article>
+                    </article>
             ))}
             </div>
             )}

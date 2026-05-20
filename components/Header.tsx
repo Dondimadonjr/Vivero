@@ -1,66 +1,49 @@
-"use client";
-
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
-  const whatsappNumber =
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "56912345678";
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "56912345678";
 
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    "Hola, quiero consultar por las plantas disponibles en Vivero Frijolito."
-  )}`;
-
-  function scrollToCatalogo() {
-    const catalogo = document.getElementById("catalogo");
-
-    if (!catalogo) return;
-
-    const y = catalogo.getBoundingClientRect().top + window.scrollY - 120;
-
-    window.scrollTo({
-      top: y,
-      behavior: "smooth",
-    });
-  }
+  const whatsappMessage = encodeURIComponent(
+    "Hola, quiero consultar por las plantas disponibles del vivero."
+  );
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-[#f8f3ed]/85 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
-        <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-40 border-b border-[#e7ddcf] bg-[#f8f3ea]/90 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src="/logo_vivero_circular.png"
-            alt="Logo Vivero Frijolito"
-            width={56}
-            height={56}
+            alt="Logo vivero frijolito"
+            width={64}
+            height={64}
             priority
-            className="h-14 w-14 rounded-full object-contain shadow-sm"
+            className="h-20 w-20 rounded-full object-contain"
           />
 
-          <div>
-            <h1 className="text-xl font-bold tracking-tight text-[#1f2a24] sm:text-2xl">
-              vivero frijolito
-            </h1>
-
-            <p className="hidden text-sm text-[#5b655f] sm:block">
-              Amor, paciencia y hojas nuevas 💚
+          <div className="leading-[0.95]">
+            <p className="text-2xl font-semibold tracking-tight text-[#1f2a24] sm:text-3xl">
+              vivero
+            </p>
+            <p className="text-2xl font-semibold tracking-tight text-[#1f2a24] sm:text-3xl">
+              frijolito
             </p>
           </div>
-        </div>
+        </Link>
 
-        <nav className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={scrollToCatalogo}
-            className="rounded-2xl border border-[#d8cfc2] bg-white px-4 py-2.5 text-sm font-medium text-[#1f2a24] transition hover:bg-[#edf5ef] sm:px-5 sm:py-3"
+        <nav className="flex items-center gap-3">
+          <a
+            href="#catalogo"
+            className="hidden rounded-full border border-[#ddd0be] bg-white/80 px-7 py-3 text-base font-medium text-[#1f2a24] shadow-sm transition duration-300 hover:-translate-y-0.5 hover:bg-white hover:shadow-md sm:inline-flex"
           >
             Catálogo
-          </button>
+          </a>
 
           <a
-            href={whatsappUrl}
+            href={`https://wa.me/${phone}?text=${whatsappMessage}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-2xl bg-[#2f6f4e] px-4 py-2.5 text-sm font-medium text-white shadow-lg shadow-[#2f6f4e]/20 transition hover:bg-[#255c40] sm:px-5 sm:py-3"
+            className="rounded-full bg-[#2f7d55] px-7 py-3 text-base font-semibold text-white shadow-md shadow-[#2f7d55]/20 transition duration-300 hover:-translate-y-0.5 hover:bg-[#286946] hover:shadow-lg"
           >
             WhatsApp
           </a>

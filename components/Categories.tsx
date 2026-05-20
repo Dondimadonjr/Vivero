@@ -6,22 +6,17 @@ const categories = [
   {
     name: "Todos",
     image:
-      "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    name: "Monsteras",
-    image:
-      "https://images.unsplash.com/photo-1545241047-6083a3684587?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    name: "Philodendros",
-    image:
       "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?q=80&w=1200&auto=format&fit=crop",
   },
   {
-    name: "Exóticas",
+    name: "Interior",
     image:
-      "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=1200&auto=format&fit=crop",
+  },
+  {
+    name: "Exterior",
+    image:
+      "https://images.unsplash.com/photo-1617576683096-00fc8eecb3af?q=80&w=1200&auto=format&fit=crop",
   },
   {
     name: "Insumos",
@@ -29,9 +24,9 @@ const categories = [
       "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?q=80&w=1200&auto=format&fit=crop",
   },
   {
-    name: "Filito",
+    name: "Exóticas",
     image:
-      "https://images.unsplash.com/photo-1520412099551-62b6bafeb5bb?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1509423350716-97f9360b4e09?q=80&w=1200&auto=format&fit=crop",
   },
 ];
 
@@ -66,11 +61,11 @@ export default function Categories({
           🌿 Categorías
         </span>
 
-        <h2 className="mt-6 text-4xl font-bold">Colecciones destacadas</h2>
+        <h2 className="mt-6 text-4xl font-bold">Elige lo que necesitas</h2>
 
         <p className="mt-3 max-w-2xl text-[#5b655f]">
-          Explora nuestras plantas, productos especiales e insumos para cuidar
-          tu rincón verde.
+          Encuentra plantas ideales para interior, exterior e insumos para cuidar tu
+          rincón verde.
         </p>
       </div>
 
@@ -83,13 +78,13 @@ export default function Categories({
               key={category.name}
               type="button"
               onClick={() => handleCategoryClick(category.name)}
-              className="group min-w-[82px] transition hover:-translate-y-1 sm:min-w-[92px]"
+              className="group min-w-[82px] rounded-[28px] p-1 transition hover:-translate-y-1 sm:min-w-[92px]"
             >
               <div
                 className={`h-[82px] w-[82px] shrink-0 overflow-hidden rounded-[24px] border-4 shadow-lg transition duration-300 sm:h-[92px] sm:w-[92px] sm:rounded-[28px] ${
                   isActive
-                    ? "scale-105 border-[#2f6f4e]"
-                    : "border-white hover:border-[#d8cfc2]"
+                  ? "scale-105 border-[#2f6f4e] shadow-xl shadow-[#2f6f4e]/20"
+                  : "border-white hover:border-[#d8cfc2]"
                 }`}
               >
                 <Image

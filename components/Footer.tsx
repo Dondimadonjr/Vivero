@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Camera, MessageCircle, MapPin, Clock } from "lucide-react";
+import Link from "next/link";
 
 export default function Footer() {
   const whatsappNumber =
@@ -15,10 +16,10 @@ export default function Footer() {
         <div className="flex items-start gap-4">
           <Image
             src="/logo_vivero_circular.png"
-            alt="Logo Vivero Frijolito"
-            width={72}
-            height={72}
-            className="h-[72px] w-[72px] shrink-0 rounded-full object-contain shadow-sm"
+            alt="Vivero Frijolito"
+            width={56}
+            height={56}
+            className="h-12 w-12 shrink-0 rounded-full object-contain sm:h-14 sm:w-14"
           />
 
           <div>
@@ -64,7 +65,7 @@ export default function Footer() {
           </p>
 
           <div className="mt-5 flex flex-wrap gap-3">
-            <a
+            <Link
               href="https://instagram.com/viverofrijolito"
               target="_blank"
               rel="noopener noreferrer"
@@ -73,9 +74,9 @@ export default function Footer() {
             >
               <Camera size={18} />
               Instagram
-            </a>
+            </Link>
 
-            <a
+            <Link
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
@@ -84,7 +85,7 @@ export default function Footer() {
             >
               <MessageCircle size={18} />
               WhatsApp
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { supabase } from "@/lib/supabase";
+import ProductCard from "@/components/ProductCard";
 
 type Product = {
   id: string;
@@ -11,6 +11,7 @@ type Product = {
   price: number | null;
   category: string | null;
   image_url: string | null;
+  environment: string | null;
   available: boolean;
   featured: boolean;
 };
@@ -56,6 +57,7 @@ export default function ProductsGrid({ activeCategory }: Props) {
 
       if (error) {
         console.error("Error al cargar productos:", error);
+        setProducts([]);
         setLoadingProducts(false);
         return;
       }
@@ -72,17 +74,6 @@ export default function ProductsGrid({ activeCategory }: Props) {
       ? products
       : products.filter((product) => product.category === activeCategory);
 
-  function getWhatsappUrl(product: Product) {
-    const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "56912345678";
-
-    const productName = product.name || "este producto";
-    const productPrice = Number(product.price || 0).toLocaleString("es-CL");
-
-    const message = `Hola, quiero consultar por ${productName} de $${productPrice}. ¿Está disponible?`;
-
-    return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-  }
-
   return (
     <section id="catalogo" className="mx-auto max-w-7xl px-6 pb-12 pt-4">
       <div className="mb-12">
@@ -91,7 +82,11 @@ export default function ProductsGrid({ activeCategory }: Props) {
         </span>
 
         <h2 className="mt-6 text-4xl font-bold">
-          {activeCategory === "Todos" ? "Plantas disponibles" : activeCategory}
+          {activeCategory === "Todos"
+            ? "Productos disponibles"
+            : activeCategory === "Insumos"
+            ? "Insumos disponibles"
+            : `Plantas de ${activeCategory.toLowerCase()}`}
         </h2>
 
         <p className="mt-3 text-[#5b655f]">
@@ -101,7 +96,13 @@ export default function ProductsGrid({ activeCategory }: Props) {
                 filteredProducts.length === 1
                   ? "producto disponible"
                   : "productos disponibles"
-              }${activeCategory !== "Todos" ? ` en ${activeCategory}` : ""}.`}
+              }${
+                activeCategory !== "Todos"
+                  ? activeCategory === "Insumos"
+                    ? " en insumos"
+                    : ` para ${activeCategory.toLowerCase()}`
+                  : ""
+              }.`}
         </p>
       </div>
 
@@ -122,71 +123,9 @@ export default function ProductsGrid({ activeCategory }: Props) {
           </p>
         </div>
       ) : (
-       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid justify-center gap-8 md:grid-cols-2 lg:grid-cols-3">
           {filteredProducts.map((product) => (
-            <article
-              key={product.id}
-              className="group overflow-hidden rounded-[30px] border border-[#eadfce] bg-white shadow-lg transition duration-500 hover:-translate-y-2 hover:shadow-2xl"
-            >
-              <div className="relative overflow-hidden">
-                {product.image_url ? (
-                  <Image
-                    width={500}
-                    height={420}
-                    src={product.image_url}
-                    alt={product.name || "Producto del vivero"}
-                    className="h-56 w-full object-cover transition duration-700 group-hover:scale-105 sm:h-64"
-                  />
-                ) : (
-                  <div className="flex h-56 items-center justify-center bg-[#f5f1ea] text-[#5b655f] sm:h-64">
-                    🌿 Producto sin imagen
-                  </div>
-                )}
-
-                <div className="absolute left-4 top-4 flex flex-wrap gap-2">
-                  <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-[#2f6f4e] shadow-sm backdrop-blur">
-                    {product.category || "Producto"}
-                  </span>
-
-                  {product.featured && (
-                    <span className="rounded-full bg-[#fff7df]/95 px-3 py-1 text-xs font-semibold text-[#8a6500] shadow-sm backdrop-blur">
-                      Destacado
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              <div className="p-6">
-                <h3 className="text-xl font-bold leading-tight text-[#1f2a24] sm:text-2xl">
-                  {product.name || "Producto sin nombre"}
-                </h3>
-
-                <p className="mt-3 line-clamp-3 min-h-[72px] text-sm leading-6 text-[#5b655f]">
-                  {product.description || "Sin descripción disponible."}
-                </p>
-
-                <div className="mt-6 flex flex-col gap-4 border-t border-[#eadfce] pt-5 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.18em] text-[#5b655f]">
-                      Precio
-                    </p>
-
-                    <span className="mt-1 block text-2xl font-bold text-[#2f6f4e]">
-                      ${Number(product.price || 0).toLocaleString("es-CL")}
-                    </span>
-                  </div>
-
-                  <a
-                    href={getWhatsappUrl(product)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-2xl bg-[#2f6f4e] px-5 py-3 text-center text-sm font-semibold text-white shadow-lg shadow-[#2f6f4e]/20 transition hover:-translate-y-0.5 hover:bg-[#255c40]"
-                  >
-                    Consultar
-                  </a>
-                </div>
-              </div>
-            </article>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       )}

@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   const whatsappNumber =
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "56912345678";
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "56966913920";
 
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     "Hola, quiero consultar por las plantas disponibles en Vivero Frijolito."
@@ -24,7 +25,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative overflow-hidden px-6 py-14 lg:py-20">
+    <section className="relative overflow-hidden px-6 py-14 lg:py-10">
       <div className="mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
           <span className="rounded-2xl border border-[#d8cfc2] bg-white px-4 py-2 text-sm">
@@ -49,14 +50,14 @@ export default function Hero() {
               Explorar catálogo
             </button>
 
-            <a
+            <Link
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-2xl border border-[#d8cfc2] bg-white px-6 py-4 text-center font-medium text-[#1f2a24] transition hover:bg-[#edf5ef]"
             >
               Consultar por WhatsApp
-            </a>
+            </Link>
           </div>
         </div>
 

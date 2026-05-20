@@ -12,7 +12,7 @@ export default function Home() {
   const [activeCategory, setActiveCategory] = useState("Todos");
 
   return (
-    <main className="min-h-screen bg-[#f8f3ed] text-[#1f2a24]">
+    <main className="min-h-screen bg-[#f8f3ea] text-[#1f2a24]">
       <Header />
       <Hero />
 
